@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { IKeyStore, TKeyData, TKeyStoreInit } from '../lib/types';
+import { IKeyStore, TKeyData, TKeyStoreInit, TSaveSettings } from '../lib/types';
 import { readFile, writeFile } from 'fs'
 ;
 export class KeyHolder implements IKeyStore {
@@ -22,7 +22,7 @@ export class KeyHolder implements IKeyStore {
 	constructor({ settings, data }: TKeyStoreInit = {}) {
 		this.hashByDefault = settings?.hashByDefault || false;
 
-		if (data) this.saveBulk(data);
+		if (data) this.saveBulk(data, {overwrite: true});
 	}
 
 
@@ -52,40 +52,40 @@ export class KeyHolder implements IKeyStore {
 
 
 	/** Read a specified key-value pair from the store. */
-	read = (key: string): string | null => this.storedData[key]?.value || null;
+	read = (key: string): TKeyData | null => this.storedData[key] || null;
 
 
 	/** Get all key-value pairs from the store. */
 	readAll = () => this.storedData;
 
 	
-	/** Save a key-value pair to the store, will overwrite existing value if key already exists. */
-	save = ({ key, value, hashed }: TKeyData) => {
+	/** Save a key-value pair to the store, overwriting existing data if set. */
+	save = (data: TKeyData, settings?: TSaveSettings) => {
 
-		if ((this.usesDefaultHash() && hashed !== false) || hashed === true) {
-			value = this.hash(value);
-			hashed = true;
+		if (!settings?.overwrite && this.exists(data.key)) throw new Error(`Key ${data.key} already exists.`);
+
+		if ((this.usesDefaultHash() && data.hashed !== false) || data.hashed === true) {
+			data.value = this.hash(data.value);
+			data.hashed = true;
 		} else {
-			hashed = false;
+			data.hashed = false;
 		}
 
-		this.storedData = {
-			...this.storedData,
-			[key]: { value, hashed },
-		};
+		this.storedData = { ...this.storedData, [data.key]: data };
 	};
 
 
-	/** Bulk save a set of key-value pairs into the store, will overwrite existing values if keys already exist. */
-	saveBulk = async (data: TKeyData[]) => {
+	/** Bulk save a set of key-value pairs into the store, will overwrite existing values if set. */
+	saveBulk = async (data: TKeyData[], settings?: TSaveSettings) => {
 		await data.forEach((item) => {
+			if(!settings?.overwrite && this.exists(item.key)) throw new Error(`Key ${item.value} already exists.`);
 			this.save(item);
 		});
 	};
 
 
-	/** Bulk save from a JSON file, will overwrite existing values if keys already exist. */
-	saveBulkFromFile = (filePath: string) => {
+	/** Bulk save from a JSON file, will overwrite existing values if set */
+	saveBulkFromFile = (filePath: string, settings?: TSaveSettings) => {
 		const promise = new Promise((resolve, reject) => {
 			readFile(filePath, (err, data) => {
 				if (err) return reject(err);
@@ -93,8 +93,9 @@ export class KeyHolder implements IKeyStore {
 				const parsedData = JSON.parse(data.toString());
 
 				Object.keys(parsedData).forEach((key) => {
+					if(!settings?.overwrite && this.exists(key)) throw new Error(`Key ${key} already exists.`);
 					this.save({
-						key,
+						key: parsedData[key].key,
 						value: parsedData[key].value,
 						hashed: parsedData[key].hashed,
 					});
@@ -110,6 +111,7 @@ export class KeyHolder implements IKeyStore {
 
 	/** 
 	 * Updates a key-value pair in the store if it exists, if it doesn't throw an error.
+	 * @deprecated This has been replaced with the overwrite option for save. Planned to be removed in v1
 	 */
 	update = ({ key, value, hashed }: TKeyData) => { 
 		if (this.storedData[key]) { 
@@ -160,7 +162,7 @@ export class KeyHolder implements IKeyStore {
 	isEqual = (key: string, value: string | object) => {
 		if (this.storedData[key].hashed) return this.compare(this.storedData[key].value, value);
 		
-		return this.read(key) === value;
+		return this.read(key)?.value === value;
 	};
 
 
@@ -171,3 +173,10 @@ export class KeyHolder implements IKeyStore {
 	/** Check if a key is in the store. */
 	exists = (key: string) => this.storedData[key] !== undefined;
 }
+
+const store = new KeyHolder();
+
+store.save({key: '123', value: '456'});
+store.save({key: '456', value: '789'});
+
+console.log(store.isEqual('123', '456'));

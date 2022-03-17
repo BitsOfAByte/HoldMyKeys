@@ -32,7 +32,7 @@ const keyHolder = new KeyHolder();
 keyHolder.save({key: "my-key", value: "This is a value for a key"});
 
 // Get the value of a key
-keyHolder.read("my-key"); // "This is a value for a key"
+keyHolder.read("my-key")?.value; // "This is a value for a key"
 
 // Remove a key from the KeyHolder
 keyHolder.remove("my-key");
@@ -49,16 +49,15 @@ keyHolder.remove("my-key");
 
 ### Methods
 
-Note: All save methods will overwrite old keys if they exist, this behaviour will be tweaked in the future. Please use `.update()` for updating keys.
-
 | Name                 | Description                                          | Arguments                                               | Return             |
 |----------------------|------------------------------------------------------|---------------------------------------------------------|--------------------|
 | #.read()             | Read a key from the keyholder                        | `key: string`                                           | `string | null`    |
 | #.readAll()          | Read all keys from the keyholder,                    | `none`                                                  | `TKeyData[]`       |
-| #.save()             | Save a key to the keyholder                          | `TKeyData`                                              | `void`             |
-| #.saveBulk()         | Save multiple keys to the keyholder                  | `keys: TKeyData[]`                                      | `Promise<void>`    |
+| #.save()             | Save a key to the keyholder                          | `TKeyData, TSaveSettings`                               | `void`             |
+| #.saveBulk()         | Save multiple keys to the keyholder                  | `TKeyData[], TSaveSettings`                             | `Promise<void>`    |
 | #.saveBulkFromFile() | Save multiple keys from a JSON file to the keyholder | `filePath: string`                                      | `Promise<unknown>` |
-| #.update()           | Updates a key in the keyholder if it exists          | `TKeyData`                                              | `void`             |
+| #.saveIfNotExists()  | Saves a key to the keyholder if it doesn't exist     | `TKeyData`                                              | `void`             |
+| #.update()           | DEPRECATED: Update a value if it exists              | `TKeyData`                                              | `void`             |
 | #.dump()             | Dump all the keys in the keyholder to a file         | `filePath: string`                                      | `Promise<unknown>` |
 | #.remove()           | Remove a key from the keyholder                      | `key: string`                                           | `void`             |
 | #.removeBulk()       | Remove multiple keys from the keyholder              | `keys: string[]`                                        | `Promise<void>`    |
@@ -74,3 +73,4 @@ Note: All save methods will overwrite old keys if they exist, this behaviour wil
 | TKeyData          | `{ key: string, value: string \|object, hashed: boolean }` |
 | TKeyStoreSettings | `{ hashedByDefault?: boolean }`                            |
 | TKeyStoreInit     | `{ settings?: TKeyStoreSettings, data?: TKeyData[] }`      |
+| TSaveSettings     | `{ settings?: overwrite?: boolean }`                       |
