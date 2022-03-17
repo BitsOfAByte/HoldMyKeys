@@ -49,8 +49,6 @@ keyHolder.remove("my-key");
 
 ### Methods
 
-Note: All save methods will overwrite old keys if they exist, this behaviour will be tweaked in the future. Please use `.update()` for updating keys.
-
 | Name                 | Description                                          | Arguments                                               | Return             |
 |----------------------|------------------------------------------------------|---------------------------------------------------------|--------------------|
 | #.read()             | Read a key from the keyholder                        | `key: string`                                           | `string | null`    |
@@ -58,6 +56,7 @@ Note: All save methods will overwrite old keys if they exist, this behaviour wil
 | #.save()             | Save a key to the keyholder                          | `TKeyData`                                              | `void`             |
 | #.saveBulk()         | Save multiple keys to the keyholder                  | `keys: TKeyData[]`                                      | `Promise<void>`    |
 | #.saveBulkFromFile() | Save multiple keys from a JSON file to the keyholder | `filePath: string`                                      | `Promise<unknown>` |
+| #.saveIfNotExists()  | Saves a key to the keyholder if it doesn't exist     | `TKeyData`                                              | `void`             |
 | #.update()           | Updates a key in the keyholder if it exists          | `TKeyData`                                              | `void`             |
 | #.dump()             | Dump all the keys in the keyholder to a file         | `filePath: string`                                      | `Promise<unknown>` |
 | #.remove()           | Remove a key from the keyholder                      | `key: string`                                           | `void`             |
