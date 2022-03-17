@@ -1,15 +1,15 @@
 export interface IKeyStore {
 
-  read(key: string): string | null
+  read(key: string): TKeyData | null
 
   readAll(): TKeyData[]
 
-  save({ key, value, hashed }: TKeyData): void
+  save(data: TKeyData, settings?: TSaveSettings): void
 
   saveBulk(data: TKeyData[]): Promise<void>
 
   saveBulkFromFile(filePath: string): Promise<unknown>
-
+  
   update({ key, value, hashed }: TKeyData): void
 
   dump(filePath: string): Promise<unknown>
@@ -43,3 +43,7 @@ export type TKeyStoreInit = {
   settings?: TKeyStoreSettings,
   data?: TKeyData[],
 };
+
+export type TSaveSettings = { 
+  overwrite?: boolean,
+}

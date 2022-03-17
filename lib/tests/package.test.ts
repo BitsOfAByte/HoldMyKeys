@@ -19,7 +19,7 @@ test('Can initialise a KeyHolder with data', () => {
 	]});
 
 	expect(keyHolder).toBeDefined();
-	expect(keyHolder.read(testKey)).toBe(testValue);
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
 });
 
 
@@ -32,24 +32,8 @@ test('Can initialise a KeyHolder as hashed', () => {
 	keyHolder.save({ key: testKey, value: testValue });
 
 	expect(keyHolder).toBeDefined();
-	expect(keyHolder.read(testKey)).not.toBe(testValue);
+	expect(keyHolder.read(testKey)?.value).not.toBe(testValue);
 	expect(keyHolder.isEqual(testKey, testValue)).toBe(true);
-});
-
-
-// Can update a key-value pair
-test('Can update a key-value pair', () => {
-	const keyHolder = new KeyHolder();
-
-	keyHolder.save({ key: testKey, value: testValue });
-	keyHolder.update({ key: testKey, value: 'updated-value' });
-	expect(keyHolder.read(testKey)).toBe('updated-value');
-
-	// try to update a non existant value and pass if it throws an error
-	expect(() => { 
-		keyHolder.update({ key: 'non-existant-key', value: 'updated-value' });
-	}).toThrowError();
-	
 });
 
 
@@ -59,7 +43,18 @@ test('Can read all key-value pairs from the store', () => {
 		{ key: testKey, value: testValue, hashed: false },
 	]});
 
-	expect(keyHolder.readAll()).toEqual({ [testKey]: { value: testValue, hashed: false } });
+	expect(keyHolder.readAll()).toEqual({ [testKey]: { key: testKey, value: testValue, hashed: false } });
+});
+
+
+// Store preventsd overwriting existing values
+test('Store prevents overwriting existing values', () => {
+	const keyHolder = new KeyHolder();
+
+	keyHolder.save({ key: testKey, value: testValue });
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
+	
+	expect(() => keyHolder.save({ key: testKey, value: testValue })).toThrow();
 });
 
 
@@ -68,10 +63,10 @@ test('Can load a set of key-value pairs into the store', () => {
 	const keyHolder = new KeyHolder();
 
 	keyHolder.saveBulk([
-		{ key: testKey, value: testValue, hashed: false },
+		{ key: testKey, value: testValue, hashed: false }, 
 	]);
 
-	expect(keyHolder.read(testKey)).toBe(testValue);
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
 });
 
 
@@ -91,7 +86,7 @@ test('Can read from a JSON file', () => {
 	const keyHolder = new KeyHolder();
 
 	keyHolder.saveBulkFromFile(testFile).then(() => {
-		expect(keyHolder.read(testKey)).toBe(testValue);
+		expect(keyHolder.read(testKey)?.value).toBe(testValue);
 	});
 });
 
@@ -101,11 +96,11 @@ test('Can remove a key-value pair from the store', () => {
 		{ key: testKey, value: testValue, hashed: false },
 	]});
 
-	expect(keyHolder.read(testKey)).toBe(testValue);
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
 
 	keyHolder.remove(testKey);
 
-	expect(keyHolder.read(testKey)).toBe(null);
+	expect(keyHolder.read(testKey)?.value).toBe(undefined);
 });
 
 
@@ -116,13 +111,13 @@ test('Can bulk remove a set of key-value pairs from the store', () => {
 		{ key: `${testKey}-2`, value: `${testValue}-2`, hashed: false },
 	]});
 
-	expect(keyHolder.read(testKey)).toBe(testValue);
-	expect(keyHolder.read(`${testKey}-2`)).toBe(`${testValue}-2`);
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
+	expect(keyHolder.read(`${testKey}-2`)?.value).toBe(`${testValue}-2`);
 
 	keyHolder.removeBulk([testKey, `${testKey}-2`]);
 
-	expect(keyHolder.read(testKey)).toBe(null);
-	expect(keyHolder.read(`${testKey}-2`)).toBe(null);
+	expect(keyHolder.read(testKey)?.value).toBe(undefined);
+	expect(keyHolder.read(`${testKey}-2`)?.value).toBe(undefined);
 });
 
 
@@ -132,11 +127,11 @@ test('Can clear all pairs from the store', () => {
 		{ key: testKey, value: testValue, hashed: false },
 	]});
 
-	expect(keyHolder.read(testKey)).toBe(testValue);
+	expect(keyHolder.read(testKey)?.value).toBe(testValue);
 
 	keyHolder.clear();
 
-	expect(keyHolder.read(testKey)).toBe(null);
+	expect(keyHolder.read(testKey)?.value).toBe(undefined);
 });
 
 
@@ -179,8 +174,8 @@ test('Can check if key exists with method', () => {
 		{ key: testKey, value: testValue, hashed: false },
 	]});
 
-	expect(keyHolder. exists(testKey)).toBe(true);
-	expect(keyHolder. exists(`${testKey}-2`)).toBe(false);
+	expect(keyHolder.exists(testKey)).toBe(true);
+	expect(keyHolder.exists(`${testKey}-2`)).toBe(false);
 });
 
 
