@@ -107,6 +107,17 @@ export class KeyHolder implements IKeyStore {
 		return promise;
 	};
 
+	/** 
+	 * Saves a key-value pair if it doesn't exist, will throw an error if the key already exists.
+	*/
+	saveIfNotExists = ({ key, value, hashed }: TKeyData) => {
+		if (!this.storedData[key]) {
+			this.save({ key, value, hashed });
+		} else {
+			throw new Error(`Key ${key} already exists.`);
+		}
+	};
+
 
 	/** 
 	 * Updates a key-value pair in the store if it exists, if it doesn't throw an error.

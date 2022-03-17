@@ -53,6 +53,20 @@ test('Can update a key-value pair', () => {
 });
 
 
+// Can save a value without overwriting an existing value
+test('Can save a value without overwriting an existing value', () => {
+	const keyHolder = new KeyHolder();
+
+	keyHolder.saveIfNotExists({ key: testKey, value: testValue });
+	expect(keyHolder.read(testKey)).toBe(testValue);
+
+	// try to save a value with the same key and pass if it throws an error
+	expect(() => {
+		keyHolder.saveIfNotExists({ key: testKey, value: 'updated-value' });
+	}).toThrowError();
+});
+
+
 // Can read all key-value pairs from the store
 test('Can read all key-value pairs from the store', () => {
 	const keyHolder = new KeyHolder({ data:[

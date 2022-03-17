@@ -9,6 +9,8 @@ export interface IKeyStore {
   saveBulk(data: TKeyData[]): Promise<void>
 
   saveBulkFromFile(filePath: string): Promise<unknown>
+  
+  saveIfNotExists({ key, value, hashed }: TKeyData): void
 
   update({ key, value, hashed }: TKeyData): void
 
