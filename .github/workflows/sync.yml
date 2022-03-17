@@ -12,6 +12,6 @@ jobs:
       - uses: EndBug/label-sync@v2
         with:
           source-repo: BitsOfAByte/.github
-          delete-other-labels: true
+          delete-other-labels: false
           dry-run: false
           token: ${{ secrets.GITHUB_TOKEN }}
