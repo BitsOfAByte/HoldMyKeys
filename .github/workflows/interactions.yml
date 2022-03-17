@@ -1,0 +1,59 @@
+name: Interactions
+on: 
+  pull_request:
+  issues:
+  schedule:
+  - cron: "0 0 * * *"
+  
+jobs:
+  Stale:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v5
+      id: stale
+      with:
+        # Stale Messages
+        stale-issue-message: 'This issue has been marked as stale due to a lack of activity. It will automatically closed unless there is activity.'
+        stale-pr-message: 'This PR has been marked as stale due to a lack of activity. It will automatically closed unless there is activity.'
+        
+        # Run on
+        any-of-labels: 'is: info-needed'
+          
+        # Labls
+        stale-issue-label: 'is: stale'
+        stale-pr-label: 'is: stale'
+        
+        # Timings
+        days-before-stale: 30
+        days-before-close: 7
+        
+    - name: Print outputs
+      run: echo ${{ join(steps.stale.outputs.*, ',') }}
+      
+  Label:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      
+    - uses: actions/labeler@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        sync-labels: true
+        
+  Greet:
+    if: ${{ github.event_name == 'pull_request' }} || ${{ github.event_name == 'issues' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: 'Thank you for your issue! As this is your first interaction, please be sure to check the CONTRIBUTING guidelines!'
+        pr-message: 'Thank you for your contribution! As this is your first interaction, please ensure your PR follows the CONTRIBUTING guidelines'

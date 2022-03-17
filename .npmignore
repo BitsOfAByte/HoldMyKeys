@@ -1,0 +1,19 @@
+# Test Folders
+lib/tests/*
+dist/tests/*
+coverage/*
+
+# Modules
+node_modules/*
+
+# Misc Folders
+.husky/*
+.github/*
+.assets/*
+
+# Unwanted Files
+lib/index.ts
+jest.config.js
+.eslintrc.json
+tsconfig.json
+yarn.lock

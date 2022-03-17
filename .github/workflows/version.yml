@@ -1,0 +1,41 @@
+name: Version
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Semver type for new version [patch/minor/major]'
+        required: true
+        type: choice
+        options: 
+        - patch
+        - minor
+        - major
+jobs:   
+  Bump:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with: 
+          token: ${{ secrets.FORCE_TOKEN }}
+        
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          
+      - name: Configure Git
+        run: | 
+          git config --local user.email "19539165+BitsOfAByte@users.noreply.github.com"
+          git config --local user.name "BitsOfAByte"
+      
+      - name: Configure Yarn
+        run: |
+          yarn config set version-git-message "chore(version): bump version to v%s"
+          
+      - name: Version Bump (${{ github.event.inputs.version }})
+        run: yarn version --new-version ${{ github.event.inputs.version }}
+        
+      - name: Update Remote & Create Tag
+        run: git push origin main --follow-tags --force

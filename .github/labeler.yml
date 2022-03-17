@@ -1,0 +1,17 @@
+changes | repo:
+- '*'
+
+changes | docs: 
+- '**/*.md'
+
+changes | ci:
+  - '.github/workflows/**/*'
+
+changes | lib:
+- any: ['lib/**/*', '!lib/tests/**/*']
+
+changes | tests:
+- 'lib/tests/**/*'
+
+changes | deps:
+- all: ['package.json', 'yarn.lock']
