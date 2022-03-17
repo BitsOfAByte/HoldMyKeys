@@ -73,3 +73,4 @@ keyHolder.remove("my-key");
 | TKeyData          | `{ key: string, value: string \|object, hashed: boolean }` |
 | TKeyStoreSettings | `{ hashedByDefault?: boolean }`                            |
 | TKeyStoreInit     | `{ settings?: TKeyStoreSettings, data?: TKeyData[] }`      |
+| TSaveSettings     | `{ settings?: overwrite?: boolean }`                       |
