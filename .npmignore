@@ -1,7 +1,10 @@
-# Test Folders
-lib/tests/*
-dist/tests/*
-coverage/*
+# Ignore Lib
+lib/*
+__tests__/*
+types/*
+
+# Ignore Unused Dist 
+dist/tsc/lib/*
 
 # Modules
 node_modules/*
@@ -11,8 +14,8 @@ node_modules/*
 .github/*
 .assets/*
 
-# Unwanted Files
-lib/index.ts
+# Unwanted Root Files
+rollup.config.js
 jest.config.js
 .eslintrc.json
 tsconfig.json
