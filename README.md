@@ -7,7 +7,7 @@ Easy to use in-memory key value store with zero external dependancies.
 
 #### Built With
 
-[![Typescript-Badge](https://img.shields.io/badge/Typescript-3178c6?style=for-the-badge&logo=typescript&logoColor=black)](https://javascript.com)
+[![Typescript-Badge](https://img.shields.io/badge/Typescript-3178c6?style=for-the-badge&logo=typescript&logoColor=black)](https://typescriptlang.com)
 
 </div>
 
@@ -51,12 +51,11 @@ keyHolder.remove("my-key");
 
 | Name                 | Description                                          | Arguments                                               | Return             |
 |----------------------|------------------------------------------------------|---------------------------------------------------------|--------------------|
-| #.read()             | Read a key from the keyholder                        | `key: string`                                           | `string | null`    |
+| #.read()             | Read a key from the keyholder                        | `key: string`                                           | `string`           |
 | #.readAll()          | Read all keys from the keyholder,                    | `none`                                                  | `TKeyData[]`       |
 | #.save()             | Save a key to the keyholder                          | `TKeyData, TSaveSettings`                               | `void`             |
 | #.saveBulk()         | Save multiple keys to the keyholder                  | `TKeyData[], TSaveSettings`                             | `Promise<void>`    |
-| #.saveBulkFromFile() | Save multiple keys from a JSON file to the keyholder | `filePath: string`                                      | `Promise<unknown>` |
-| #.saveIfNotExists()  | Saves a key to the keyholder if it doesn't exist     | `TKeyData`                                              | `void`             |
+| #.saveBulkFromFile() | Save multiple keys from a JSON file to the keyholde  | `TKeyData`                                              | `void`             |
 | #.update()           | DEPRECATED: Update a value if it exists              | `TKeyData`                                              | `void`             |
 | #.dump()             | Dump all the keys in the keyholder to a file         | `filePath: string`                                      | `Promise<unknown>` |
 | #.remove()           | Remove a key from the keyholder                      | `key: string`                                           | `void`             |
