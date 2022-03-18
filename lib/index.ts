@@ -173,10 +173,3 @@ export class KeyHolder implements IKeyStore {
 	/** Check if a key is in the store. */
 	exists = (key: string) => this.storedData[key] !== undefined;
 }
-
-const store = new KeyHolder();
-
-store.save({key: '123', value: '456'});
-store.save({key: '456', value: '789'});
-
-console.log(store.isEqual('123', '456'));
