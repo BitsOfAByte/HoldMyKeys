@@ -9,9 +9,10 @@ changes | ci:
 
 changes | lib:
 - any: ['lib/**/*', '!lib/tests/**/*']
+- 'types/**/*'
 
 changes | tests:
-- 'lib/tests/**/*'
+- '__tests__/**/*'
 
 changes | deps:
 - all: ['package.json', 'yarn.lock']
