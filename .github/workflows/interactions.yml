@@ -1,7 +1,7 @@
 name: Interactions
 on: 
   pull_request:
-  issues:
+  issues: 
   schedule:
   - cron: "0 0 * * *"
   
@@ -46,7 +46,7 @@ jobs:
         sync-labels: true
         
   Greet:
-    if: ${{ github.event_name == 'pull_request' }} && ${{ github.event.action == 'opened'}} || ${{ github.event_name == 'issues' }}
+    if: (${{ github.event_name == 'pull_request' }} && ${{ github.event.action == 'opened'}}) || ${{ github.event_name == 'issues' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
