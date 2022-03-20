@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                                    
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "removeComments": true,
+    "target": "es6",                                    
+    "lib": ["es6"],
+    "module": "commonjs",
     "declaration": true,                       
     "forceConsistentCasingInFileNames": true,           
     "strict": true,                                   
-    "outDir": "./dist/tsc",
+    "outDir": "./dist",
   },
-  "include": [
-    "lib",
-    "lib/types"
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
