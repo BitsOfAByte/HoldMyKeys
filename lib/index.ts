@@ -160,9 +160,9 @@ export class KeyHolder implements IKeyStore {
 
 	/** Checks if the given value is equal to a key's value. (Will hash if key's value is hashed.) */
 	isEqual = (key: string, value: string | object) => {
-		if (this.storedData[key].hashed) return this.compare(this.storedData[key].value, value);
-		
-		return this.read(key)?.value === value;
+		if (!this.storedData[key].hashed) return this.read(key)?.value === value;
+
+		return this.compare(this.storedData[key].value, value);		
 	};
 
 
