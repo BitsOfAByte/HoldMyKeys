@@ -5,11 +5,11 @@
     "module": "commonjs",
     "declaration": true,                       
     "forceConsistentCasingInFileNames": true,           
-    "strict": true,                                   
+    "strict": true,          
+    "removeComments": true,
     "outDir": "./dist",
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": [
+    "lib/**/*.ts",
+  ],
 }

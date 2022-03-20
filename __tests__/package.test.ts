@@ -1,4 +1,4 @@
-import { KeyHolder } from '../index';
+import { KeyHolder } from '../lib/index';
 import { unlinkSync, existsSync } from 'fs';
 
 const testFile = `./${Date.now().toString()}.json`;

@@ -1,18 +1,13 @@
-# Test Folders
-lib/tests/*
-dist/tests/*
+# Unwanted folders
+__tests__/*
 coverage/*
-
-# Modules
+lib/*
 node_modules/*
-
-# Misc Folders
 .husky/*
 .github/*
 .assets/*
 
 # Unwanted Files
-lib/index.ts
 jest.config.js
 .eslintrc.json
 tsconfig.json

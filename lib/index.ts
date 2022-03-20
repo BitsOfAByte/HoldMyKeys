@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { IKeyStore, TKeyData, TKeyStoreInit, TSaveSettings } from '../lib/types';
+import { IKeyStore, TKeyData, TKeyStoreInit, TSaveSettings } from './types/index.types';
 import { readFile, writeFile } from 'fs'
 ;
 export class KeyHolder implements IKeyStore {
