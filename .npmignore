@@ -8,6 +8,7 @@ node_modules/*
 .assets/*
 
 # Unwanted Files
+CONTRIBUTING.md
 jest.config.js
 .eslintrc.json
 tsconfig.json
