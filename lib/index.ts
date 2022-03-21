@@ -31,7 +31,9 @@ export class KeyHolder implements IKeyStore {
 
 
 	/** Returns the hash of the given data. */
-	private hash = (data: string | object) => typeof data === 'object' ? createHash('sha256').update(JSON.stringify(data)).digest('hex') : createHash('sha256').update(data).digest('hex'); 
+	private hash = (data: string | object) => typeof data === 'object' 
+		? createHash('sha256').update(JSON.stringify(data)).digest('hex') 
+		: createHash('sha256').update(data).digest('hex'); 
 
 
 	/** Checks if the two hashes are equal. */
@@ -121,19 +123,8 @@ export class KeyHolder implements IKeyStore {
 
 
 	/** Dump the store to to a JSON file. */
-	dump = (path: string) => {
-		const promise = new Promise((resolve, reject) => {
-			const data = JSON.stringify(this.storedData, undefined, '\t');
-
-			writeFile(path, data, (err) => {
-				if (err) return reject(err);
-			});
-
-			resolve(null);
-		});
-
-		return promise;
-	};
+	dump = (path: string) => new Promise((resolve, reject) => writeFile(path, JSON.stringify(this.storedData, undefined, '\t'), 
+		(err) => err ? reject(err) : resolve(null)));
 
 
 	/** Return the number of key-value pairs in the store. */
