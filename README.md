@@ -4,7 +4,6 @@
 
 ### Hold My Keys
 Easy to use in-memory key value store with zero external dependancies.
-
 #### Built With
 
 [![Typescript-Badge](https://img.shields.io/badge/Typescript-3178c6?style=for-the-badge&logo=typescript&logoColor=black)](https://typescriptlang.com)
@@ -12,14 +11,14 @@ Easy to use in-memory key value store with zero external dependancies.
 </div>
 
 ---
-
-## Quickstart
+  
+## Getting Started
+**Note**: HoldMyKeys has not been tested extensively. It is not recommended to use in production until v1.0.0 has been released.
 
 ### Installation
+npm: `npm i holdmykeys`
 
-`npm i holdmykeys` or `yarn add holdmykeys`
-
-**NOTE:** This package is likely not suitable for production environments and may be very slow with large amounts of data.
+Yarn: `yarn add holdmykeys`
 
 ### Basic Usage
 ```javascript
