@@ -3,21 +3,21 @@ name: Tests
 on:
   push:
     branches: [main]
-    paths: 
-      - '**.ts'
-      - '**.d.ts'
+    paths:
+      - "**.ts"
+      - "**.d.ts"
   pull_request:
     branches: [main]
     paths:
-      - '**.ts'
-      - '**.d.ts'
+      - "**.ts"
+      - "**.d.ts"
 
 jobs:
   Node:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.x, 14.x]
 
     steps:
       - name: Checkout Repository
@@ -27,16 +27,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Install Dependancies
         run: yarn
 
       - name: Run Build
         run: yarn run build
-        
+
       - name: Run Linter
         run: yarn run lint
-        
+
       - name: Run Jest
         run: yarn run jest
