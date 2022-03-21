@@ -11,7 +11,7 @@ changes | lib:
 - any: ['lib/**/*', '!lib/tests/**/*']
 
 changes | tests:
-- 'lib/tests/**/*'
+- '__tests__/**/*'
 
 changes | deps:
 - all: ['package.json', 'yarn.lock']
