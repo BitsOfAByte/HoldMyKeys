@@ -1,7 +1,6 @@
 import { createHash } from 'crypto';
 import { IKeyStore, TKeyData, TKeyStoreInit, TSaveSettings } from './types/index.types';
-import { readFile, writeFile } from 'fs'
-;
+import { readFile, writeFile } from 'fs';
 export class KeyHolder implements IKeyStore {
 	/// ///////////////////////////////////////////
 	// Data and settings for the KeyStore class //
@@ -12,7 +11,7 @@ export class KeyHolder implements IKeyStore {
 	private storedData: any = {};
 	private hashByDefault = false;
 
-	
+
 	/// ///////////////////////////////////////////
 	//   Initialisation of the KeyStore Class   //
 	/// ///////////////////////////////////////////
@@ -22,7 +21,7 @@ export class KeyHolder implements IKeyStore {
 	constructor({ settings, data }: TKeyStoreInit = {}) {
 		this.hashByDefault = settings?.hashByDefault || false;
 
-		if (data) this.saveBulk(data, {overwrite: true});
+		if (data) this.saveBulk(data, { overwrite: true });
 	}
 
 
@@ -32,18 +31,11 @@ export class KeyHolder implements IKeyStore {
 
 
 	/** Returns the hash of the given data. */
-	private hash = (data: string | object) => { 
-		if (typeof data === 'object') data = JSON.stringify(data);
-		return createHash('sha256').update(data).digest('hex');
-	};
+	private hash = (data: string | object) => typeof data === 'object' ? createHash('sha256').update(JSON.stringify(data)).digest('hex') : createHash('sha256').update(data).digest('hex'); 
 
 
 	/** Checks if the two hashes are equal. */
 	private compare = (valueOne: string | object, valueTwo: string | object) => valueOne === this.hash(valueTwo);
-
-
-	/** Check if the store is using default hashing. */
-	private usesDefaultHash = () => this.hashByDefault;
 
 
 	/// ///////////////////////////////////////////
@@ -58,13 +50,13 @@ export class KeyHolder implements IKeyStore {
 	/** Get all key-value pairs from the store. */
 	readAll = () => this.storedData;
 
-	
+
 	/** Save a key-value pair to the store, overwriting existing data if set. */
 	save = (data: TKeyData, settings?: TSaveSettings) => {
 
 		if (!settings?.overwrite && this.exists(data.key)) throw new Error(`Key ${data.key} already exists.`);
 
-		if ((this.usesDefaultHash() && data.hashed !== false) || data.hashed === true) {
+		if ((this.hashByDefault && data.hashed !== false) || data.hashed === true) {
 			data.value = this.hash(data.value);
 			data.hashed = true;
 		} else {
@@ -76,12 +68,10 @@ export class KeyHolder implements IKeyStore {
 
 
 	/** Bulk save a set of key-value pairs into the store, will overwrite existing values if set. */
-	saveBulk = async (data: TKeyData[], settings?: TSaveSettings) => {
-		await data.forEach((item) => {
-			if(!settings?.overwrite && this.exists(item.key)) throw new Error(`Key ${item.value} already exists.`);
-			this.save(item);
-		});
-	};
+	saveBulk = async (data: TKeyData[], settings?: TSaveSettings) => await data
+		.forEach((item) => settings?.overwrite && this.exists(item.key) 
+			? (function() {new Error(`Key ${item.value} already exists.`);}) 
+			: this.save(item));
 
 
 	/** Bulk save from a JSON file, will overwrite existing values if set */
@@ -113,26 +103,18 @@ export class KeyHolder implements IKeyStore {
 	 * Updates a key-value pair in the store if it exists, if it doesn't throw an error.
 	 * @deprecated This has been replaced with the overwrite option for save. Planned to be removed in v1
 	 */
-	update = ({ key, value, hashed }: TKeyData) => { 
-		if (this.storedData[key]) { 
-			this.save({ key, value, hashed });
-		} else {
-			throw new Error(`Key ${key} does not exist in the store.`);
-		}
-	};
-	
+	update = ({ key, value, hashed }: TKeyData) => this.storedData[key] 
+		? this.save({ key, value, hashed }) 
+		: (function() {throw new Error(`Key ${key} does not exist in the store.`);});
+
 
 	/** Remove a key-value pair from the store. */
 	remove = (key: string) => delete this.storedData[key];
 
-	
-	/** Bulk remove a set of key-value pairs from the store. */
-	removeBulk = async (keys: string[]) => {
-		await keys.forEach((key) => {
-			this.remove(key);
-		});
-	};
 
+	/** Bulk remove a set of key-value pairs from the store. */
+	removeBulk = async (keys: string[]) => await keys.forEach((key) => this.remove(key));
+	
 
 	/** Clear all key-value pairs from the store. */
 	clear = () => this.storedData = {};
@@ -169,7 +151,7 @@ export class KeyHolder implements IKeyStore {
 	/** Checks if the given key is hashed or not. */
 	isHashed = (key: string) => this.storedData[key].hashed;
 
-	
+
 	/** Check if a key is in the store. */
 	exists = (key: string) => this.storedData[key] !== undefined;
 }
