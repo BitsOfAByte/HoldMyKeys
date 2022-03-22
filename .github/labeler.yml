@@ -14,5 +14,5 @@ changes | tests:
 - '__tests__/**/*'
 
 changes | deps:
-- 'package.json', 
+- 'package.json'
 - 'yarn.lock'
