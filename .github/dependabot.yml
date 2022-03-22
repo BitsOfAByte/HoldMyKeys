@@ -1,11 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: "yarn" 
+  - package-ecosystem: "npm" 
     directory: "/" 
     schedule:
       interval: "daily"
+    labels: 
+      - "changes | deps"
+      - "npm"
+    reviewers:
+      - "BitsOfAByte"
       
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    labels: 
+      - "changes | deps"
+      - "actions"
+    reviewers:
+      - "BitsOfAByte"
