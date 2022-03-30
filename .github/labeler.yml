@@ -1,5 +1,5 @@
 changes | repo:
-- all: ['*', '!*.md']
+- all: ['*', '!*.md', '!package.json', '!yarn.lock']
 
 changes | docs: 
 - '**/*.md'
