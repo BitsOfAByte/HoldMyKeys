@@ -13,7 +13,8 @@ Easy to use in-memory key value store with zero external dependancies.
 ---
   
 ## Getting Started
-**Note**: HoldMyKeys has not been tested extensively. It is not recommended to use in production until v1.0.0 has been released.
+### Note
+It is not recommended to use HoldMyKeys for large or long-term data. On most hardware, keys can be stored at around `0.12ms / 1000 keys`. 
 
 ### Installation
 npm: `npm i holdmykeys`
@@ -37,6 +38,8 @@ keyHolder.read("my-key")?.value; // "This is a value for a key"
 keyHolder.remove("my-key");
 
 ```
+
+### Timings
 
 ## Documentation
 
