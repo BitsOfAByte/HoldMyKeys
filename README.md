@@ -39,8 +39,6 @@ keyHolder.remove("my-key");
 
 ```
 
-### Timings
-
 ## Documentation
 
 ### KeyHolder Arguments
