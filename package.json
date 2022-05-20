@@ -3,7 +3,7 @@
   "description": "Easy to use & lightweight management of key-value pairs :rocket::sparkles:",
   "author": "BitsOfAByte",
   "license": "MIT",
-  "version": "0.6.3",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
