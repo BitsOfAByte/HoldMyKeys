@@ -10,8 +10,6 @@ export interface IKeyStore {
 
   saveBulkFromFile(filePath: string): Promise<unknown>
   
-  update({ key, value, hashed }: TKeyData): void
-
   dump(filePath: string): Promise<unknown>
   
   remove(key: string): void
