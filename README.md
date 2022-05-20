@@ -56,7 +56,6 @@ keyHolder.remove("my-key");
 | #.save()             | Save a key to the keyholder                          | `TKeyData, TSaveSettings`                               | `void`             |
 | #.saveBulk()         | Save multiple keys to the keyholder                  | `TKeyData[], TSaveSettings`                             | `Promise<void>`    |
 | #.saveBulkFromFile() | Save multiple keys from a JSON file to the keyholde  | `TKeyData`                                              | `void`             |
-| #.update()           | DEPRECATED: Update a value if it exists              | `TKeyData`                                              | `void`             |
 | #.dump()             | Dump all the keys in the keyholder to a file         | `filePath: string`                                      | `Promise<unknown>` |
 | #.remove()           | Remove a key from the keyholder                      | `key: string`                                           | `void`             |
 | #.removeBulk()       | Remove multiple keys from the keyholder              | `keys: string[]`                                        | `Promise<void>`    |
