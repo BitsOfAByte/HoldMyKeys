@@ -101,15 +101,6 @@ export class KeyHolder implements IKeyStore {
 	};
 
 
-	/** 
-	 * Updates a key-value pair in the store if it exists, if it doesn't throw an error.
-	 * @deprecated This has been replaced with the overwrite option for save. Planned to be removed in v1
-	 */
-	update = ({ key, value, hashed }: TKeyData) => this.storedData[key] 
-		? this.save({ key, value, hashed }) 
-		: (function() {throw new Error(`Key ${key} does not exist in the store.`);});
-
-
 	/** Remove a key-value pair from the store. */
 	remove = (key: string) => delete this.storedData[key];
 
